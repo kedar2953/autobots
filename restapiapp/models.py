@@ -8,7 +8,11 @@ class Student(models.Model):
 
 class Project(models.Model):
     proj_name=models.CharField(max_length=100)
+    proj_start_date= models.DateField()
+    proj_end_date= models.DateField()
     manager_name=models.CharField(max_length=20)
+    manager_email=models.EmailField()
+    status=models.BooleanField()
     desc=models.CharField(max_length=200)
 
 class Team(models.Model):

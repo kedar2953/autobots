@@ -28,7 +28,11 @@ class StudentSerializer(serializers.Serializer):
 class ProjectSerializer(serializers.Serializer):
     id=serializers.IntegerField()
     proj_name=serializers.CharField(max_length=100)
+    proj_start_date= serializers.DateField()
+    proj_end_date= serializers.DateField()
     manager_name=serializers.CharField(max_length=20)
+    manager_email=serializers.EmailField()
+    status=serializers.BooleanField()
     desc=serializers.CharField(max_length=200)
 
     def create(self, validate_data):
