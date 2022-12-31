@@ -19,6 +19,12 @@ class StudentSerializer(serializers.Serializer):
         instance.save()
         return instance
 
+    # field level validation
+    def validate_roll(self, value):
+        if value>=200:
+            raise serializers.ValidationError("Seat full!")
+        return value
+
 class ProjectSerializer(serializers.Serializer):
     id=serializers.IntegerField()
     proj_name=serializers.CharField(max_length=100)
@@ -54,6 +60,7 @@ class TeamMemberSerializer(serializers.Serializer):
     team_name=serializers.CharField(max_length=50)
     name=serializers.CharField(max_length=50)
     role=serializers.CharField(max_length=50)
+    email=serializers.EmailField()
 
     def create(self, validated_data):
         return TeamMember.objects.create(**validated_data)
@@ -63,5 +70,6 @@ class TeamMemberSerializer(serializers.Serializer):
         instance.team_name=validated_data.get('team_name',instance.team_name)
         instance.name=validated_data.get('name',instance.name)
         instance.role=validated_data.get('role',instance.role)
+        instance.email=validated_data.get('email',instance.email)
         instance.save()
         return instance

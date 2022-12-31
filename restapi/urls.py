@@ -6,12 +6,12 @@ from restapiapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('studentinfo/<int:pk>',views.student_detail),
+    # path('studentinfo/<int:pk>',views.student_detail),
     path('studentinfo/',views.students_detail),
-    path('studentcreate/',views.student_create),
-    path('studentupdate/',views.student_update),
+    # path('studentcreate/',views.student_create),
+    # path('studentupdate/',views.student_update),
     path('student_api/',views.student_api),
-    # path('student_api/',views.StudentApi.as_view()),
+    path('student_class_api/',views.StudentApi.as_view()),
     # Project
     path('projectinfo/',views.projects_info),
     path('projectcreate/',views.project_create),

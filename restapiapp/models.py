@@ -22,6 +22,4 @@ class TeamMember(models.Model):
     team_name=models.CharField(max_length=50, default='team name')
     name=models.CharField(max_length=50)
     role=models.CharField(max_length=50)
-
-
-    
+    email=models.EmailField()
