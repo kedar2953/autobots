@@ -10,6 +10,9 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from rest_framework.response import Response
 from rest_framework import status,viewsets
+# AUTH
+from .customauth import CustomAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 class StudentViewSet(viewsets.ViewSet):
     # GET all students
@@ -159,6 +162,9 @@ class TeamMemberViewSet(viewsets.ViewSet):
 
 # ///////////////////////Project//////////////////
 class ProjectViewSet(viewsets.ViewSet):
+    # Custom AUTH
+    authentication_classes=[CustomAuthentication]
+    permission_classes=[IsAuthenticated]
     # GET all students
     def list(self,request):
         stu= Project.objects.all()
