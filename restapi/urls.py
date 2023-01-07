@@ -23,6 +23,9 @@ router.register(r'my_team_member_api',MyTeamMemberViewSet,basename='myteam')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("home/" , views.home_page) ,
+     path("home/" , views.sending_email) ,
+    path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('auth/',include('rest_framework.urls',namespace='rest_framework')),
     # path('api-auth/', include('rest_framework.urls')),

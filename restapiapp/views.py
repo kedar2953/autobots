@@ -14,6 +14,9 @@ from rest_framework import status,viewsets
 # AUTH
 from .customauth import CustomAuthentication
 from rest_framework.permissions import IsAuthenticated
+import requests
+import datetime
+from django.core.mail import send_mail
 
 
 class MyTeamViewSet(viewsets.ViewSet):
@@ -333,8 +336,8 @@ class TeamMemberViewSet(viewsets.ViewSet):
 # ///////////////////////Project//////////////////
 class ProjectViewSet(viewsets.ViewSet):
     # Custom AUTH
-    authentication_classes=[CustomAuthentication]
-    permission_classes=[IsAuthenticated]
+    # authentication_classes=[CustomAuthentication]
+    # permission_classes=[IsAuthenticated]
     # GET all students
     def list(self,request):
         stu= Project.objects.all()
@@ -385,4 +388,91 @@ class ProjectViewSet(viewsets.ViewSet):
         stu=Project.objects.get(pk=id)
         stu.delete()
         return Response({'msg':'Data Deleted!'})
+
+
+
+#  ------------------------------------------FUNCTIONS FOR MAIL AND FTECHING UPDATES------------------------------------------------------------------------------
+
+# ------------------THIS IS FOR HOME PAGE FUNCTION FOR FETCHING DATA FROM API-------------------
+
+def home_page(request):
+    current_time = datetime.datetime.now().strftime('%H:%M:%S')
+    # mail_send_time = time(14 , 20 , 00 ,00)
+    # print("sending time of the mail:" , mail_send_time)
+     
+    print("-----------")
+    print("the current time is:" , current_time)
+    url = "http://127.0.0.1:8000/team_member_api"
+    req = requests.get(url) 
+    response = req.json()
+    print("the length of API is" , len(response))
+    print("this is  home page running")
+    email_list = []
+    for item in response:
+        email = item['email']
+        print(email)
+        email_list.append(email)
+    print("printing the list of the email")
+    print(email_list)
+    url2 = "http://127.0.0.1:8000/project_api/"
+    req2 = requests.get(url2)
+    response2 = req2.json()
+    print("this is UPDATE PART")
+    print("the length of updates API is" , len(response2))
+    length = len(response2)
+    print(response2)
+    update_of_project=response2[-1]['desc']
+    print("in home_page")
+    print("the update of the project is: " , update_of_project)
+    # print("SENDING MAIL ")
+    # for i in email_list:
+    #     send_mail("this is subject of email" ,
+    #     update_of_project , 
+    #     'vedz0786@gmail.com',
+    #     [i] , 
+    #     fail_silently=False
+    #     )
+    # print("MAIL SENT")
+    return HttpResponse(response)
+
+
+# ------------------------------THIS IS FUNCTION TO SEND MAILS-----------------------
+
+def sending_email():
+    url = "http://127.0.0.1:8000/team_member_api/"
+    req = requests.get(url) 
+    response = req.json()
+    print("the length of API is in sending mail function ==>>" , len(response))
+    print("this is  home page running")
+    email_list = []
+    for item in response:
+        email = item['email']
+        print(email)
+        email_list.append(email)
+    print("printing the email list in sending mail function == >> " , email_list)
+    url2 = "http://127.0.0.1:8000/project_api/"
+    req2 = requests.get(url2)
+    response2 = req2.json()
+    print("this is UPDATE PART")
+    print("the length of updates API is" , len(response2))
+    length = len(response2)
+    print(response2)
+    update_of_project=response2[-1]['desc']
+    print("the update of the project is in sending mail function ===>>: " , update_of_project)
+    print("in sending_email")
+    print("sending mail")
+    for i in email_list:
+        send_mail(
+            #   subject=
+            "This is Testing mail",
+            # messageto be sent
+            update_of_project,
+            # mail to be sent from 
+            "settings.EMAIL_HOST_USER",
+            # mail to be sent to
+            [i],
+            fail_silently=False
+        )
+    print("mail sent")
+    return HttpResponse("MAIL SENT")
 
