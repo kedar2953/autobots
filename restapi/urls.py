@@ -4,6 +4,7 @@ from restapiapp import views
 from rest_framework import routers
 from restapiapp import views
 from rest_framework.routers import DefaultRouter
+from restapiapp.views import *
 
 # creating router object
 router= DefaultRouter()
@@ -13,6 +14,12 @@ router.register('studentapi',views.StudentViewSet,basename='student')
 router.register('team_api',views.TeamViewSet,basename='team')
 router.register('team_member_api',views.TeamMemberViewSet,basename='team_member')
 router.register('project_api',views.ProjectViewSet,basename='project')
+router.register(r'my_project_api',MyProjectViewSet,basename='myproject')
+router.register(r'my_team_api',MyTeamViewSet,basename='myteammember')
+router.register(r'my_team_member_api',MyTeamMemberViewSet,basename='myteam')
+# router.register('my_project_api',views.MyProjectViewSet,basename='myteam')
+# router.register('my_team_api',views.MyTeamViewSet,basename='myproject')
+# router.register('my_team_member_api',views.MyTeamMemberViewSet,basename='myteammember')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
